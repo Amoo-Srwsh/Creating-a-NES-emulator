@@ -1,0 +1,106 @@
+Loading the source operand when register:
+
+    t = A          INC A,DEC A,TAX,TAY,STA,ASL A,LSR A,ROL A,ROR A,BIT,CMP,PHA,ADC,SBC
+    t = X          DEX,INX,STX,TXA,TXS
+    t = Y          DEY,INY,STY,TYA
+    t = S          TSX
+    t = P          PHP
+----------------------------------------------------
+Loading the address operand:
+
+Addressing modes:
+  0= =impl: no parameters, or A is the implied operand
+  1=A=imm: the next byte is the immediate 8 bit number that is used in the operation.
+  2=B=rel: relative address, used with branch operations only
+  3=C=zp:  operation deals with the 8-bit value at address formed by $00ii where ii=next byte
+  4=D=zx   8-bit value at address formed by $00ii+X
+  5=E=zy   8-bit value at address formed by $00ii+Y
+  6=F=indx 16-bit address is read from address formed by zx; then, the 8-bit value in that address
+  7=G=indy 16-bit address is read from address formed by zp; then, the 8-bit value in that address+Y
+  8=H=abs  8-bit value at address formed by $jjii where ii=next byte, jj=next after that
+  9=I=absx 8-bit value at address formed by $jjii+X
+  a=J=absy 8-bit value at address formed by $jjii+Y
+  b=K=ind  16-bit address is read from address formed by abs; used for indirect jumps.
+
+Component operations constituting each addressing mode:
+                  0123456789ab   <- different addressing modes
+    t = PB         ABCDEFGHIJK   <- letters indicate which modes use this particular operation
+    t = t + X         D F
+    t = t + Y          E
+ addr = t           BCDEFGHIJK
+ addr = addr + PC   B
+ addr += 256 * PB         HIJK
+ addr = RW(addr)        FG   K
+ addr = addr + X           I
+ addr = addr + Y         G  J
+ 
+
+----------------------------------------------------
+Load the data from the address:
+
+    t = RB(addr)      LDA,LDX,LDY, DEC,INC, ASL,LSR,ROL,ROR, ...
+
+It is not always done after loading the address operand.
+For example, if the parameter is an immediate (such as with lda #1, which
+just initializes the A register with literal value, 1), then t = PB simply
+was enough to load the immediate.
+    
+----------------------------------------------------
+    
+----------------------------------------------------
+  This is how different operations are implemented...
+  Or were, in the November 1st sketch that was the basis
+  to my program that generated the instruction tables:
+
+   Vf = t.6           BIT
+   Cf = t.0           LSR, ROR
+   Cf = t.7           ASL, ROL
+    t <<= 1           ASL, ROL
+    t >>= 1           LSR, ROR
+    t.0 = oldCf       ROL
+    t.7 = oldCf       ROR
+    t = t & A         AND, BIT, ANC,ARR,ASR,SAX,SBX
+    t = t | A         ORA
+    t = t ^ A         EOR
+    t = t - 1         DEC, DEX, DEY, DCP
+    t = t + 1         INC, INX, INY, ICP
+    t = A - t         CMP, DCP,ICP
+    t = X - t         CPX
+    t = Y - t         CPY
+   Cf = (t).8         ADC, SBC, ASL, ROL
+   Cf = (~t).8        CMP, CPX, CPY
+   Zf = t == 0
+   Nf = (t).7
+    t = NOT t         SBC
+   Vf = (~(t ^ A)).7  ADC, SBC
+    t = t + A + Cf    ADC, SBC
+   Vf &= (t ^ A).7    ADC, SBC
+    t = POP           PLP,RTI
+   PC = POP           RTI,RTS
+   PUSH t             PHA,PHP
+    t = 1             SEC,CLC, BCS,BCC
+    t = 2                      BEQ,BNE
+    t = 4             SEI,CLI
+    t = 8             SED,CLD
+    t = 64                CLV, BVS,BVC
+    t = 128                    BMI,BPL
+    t = P| t          SEC,SEI,SED
+    t = P&~t          CLC,CLI,CLD,CLV
+    it(P & t)PC=addr; BCS,BEQ,BVS,BMI
+    if(!(P&t))PC=addr;BCC,BNE,BVC,BPL
+    PC=addr;          JMP
+----------------------------------------------------
+  And finally, storing the response to a register or to a memory address:
+
+    A = t             AND,EOR,ORA,DEC A,INC A,LDA,TXA,TYA,ASL A,LSR A,ROL A,ROR A,PLA,ADC,SBC
+    X = t             DEX,INX,LDX,TAX,TSX
+    Y = t             DEY,INY,LDY,TAY
+    S = t             TXS
+    P = t|32          PLP,RTI, SEC,SEI,SED,CLC,CLI,CLD,CLV
+    WB(addr, t)       
+
+
+Hi Reddit! If you need information feel free to ask. Throw me a privmsg in YouTube
+or on any board I frequent. I have an email address too.
+
+

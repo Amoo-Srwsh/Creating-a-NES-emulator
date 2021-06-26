@@ -1,0 +1,31 @@
+The table generator for the NES emulator, written in PHP, consists
+of two parts. opdata.php lists all the instructions supported by the
+emulator.
+
+You can see here a C++ version of the opdata.php file:
+   http://bisqwit.iki.fi/src/arch/nescom-1.1.5.2.tar.gz
+
+See files insdata.cc and insdata.hh .
+
+Indeed, the PHP file was in fact a direct translation of the table
+in this C++ code that I wrote years ago.
+Then I extended the table to support the various unofficial opcodes.
+
+Then the other part in the PHP version, mktables.php , is a lot more
+obfuscated, because it went through a lot of revisions and testing.
+Basically it uses a combination of the addressing mode and the
+instruction name to decide which micro-components ($plan elements)
+are required to synthesize that particular opcode.
+
+For example, if the instruction is indicated as requiring the X register
+as a source in all cases, this line adds the corresponding micro-operation
+into the plan for that particular instruction:
+
+  if($source_always_X)         $plan[1101] = "t &= X;";
+
+And the code below checks that if the instruction is a DEC, a DEX, a DEY,
+or a DCP -- all of which decrement an operand by one -- the corresponding
+micro-operation is added into the plan for that particular instruction.
+
+  if(preg_match('/dec|dex|dey|dcp/', $op))
+                               $plan[1240] = "t = u8(t - 1);";

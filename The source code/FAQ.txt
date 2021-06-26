@@ -1,0 +1,98 @@
+FAQ on the video, "Creating a NES emulator in C++11 (PART 1/2)", at http://www.youtube.com/watch?v=y71lli8MS8s :
+
+Q) Is the video sped up? Or, is that your real typing speed?
+A) No, it's not sped up. But the input is pre-choreographed. The computer
+   implements the choreography, as well as designs a part of it.
+   It is a TAS, except I'm not speedrunning; I'm just aiming for
+   15 minutes and to utilize it in the most entertaining manner.
+   My typing speed is not the focus of that video; it is not even
+   being presented except in a small part of the 2/2 video.
+   The focus is in the source code.
+
+  Q) What is a TAS?
+  A) Short for Tool-Assisted Speedrun. In a more general sense,
+     tool-assistance refers to anything that augments human abilities
+     [in the field of using some technology, such as video games].
+     Tool-assisted videogame speedruns, such as those published
+     on TASVideos (http://tasvideos.org/), are input recordings
+     that can be fed to the game, and the game reacts to it as
+     if a real human was playing, even though the input may contain
+     events that are too difficult for a real human to perform.
+     They are usually created by slowing the game down to allow
+     the player more time to think and to move fingers, and with
+     the use of savestates in order to retry something a limitless
+     number of times until it succeeds. When the input is replayed
+     back, the game is running normally but it appears as if the
+     human has superhuman abilities of prediction and accuracy.
+     My programming videos employ similar principles
+     for the purpose of source code presentation.
+
+Q) Why is all the code in a single module?
+A) So far I haven't been able to figure out how to present
+   multi-module development in a video in a natural manner
+   that does not force constant awkward context switches,
+   using my present tools.
+
+Q) What is that editor?
+A) Quoting i8wg's post at Reddit, for he's got it all figured out (correctly):
+
+  For those who wonder (like me):
+  It's his own editor, like he stated in one of his YT comments.
+  I just tested it in DOSBox, and it looks VERY nice.
+  Link: http://bisqwit.iki.fi/src/dos-editor-e-snapshot-2011-11-23.zip
+  Also, his "Linux" is
+    this: http://bisqwit.iki.fi/src/linux_for_dosbox_source.zip
+      and http://bisqwit.iki.fi/src/linux-for-dosbox.zip
+  Take a look at the README.txt inside (3rd link)!
+  - i8wg
+
+Q) Why DOSBox, why not a modern IDE?
+A) I can be backwards at times. It's just something that happens to
+   work for me. Screen recorders are too slow and my computers are
+   obsolete, all of them.
+
+Q) How about the window manager in part 2/2, where you run the
+   emulator in Linux, is it perhaps XMonad?
+A) I captured textmode video from DOSBox. Then I composited the
+   video captures from the NES emulator into it using another program.
+   I haven't bothered to learn how to do that kind of stuff with publicly
+   available software, so I just coded one. Do you see a pattern?
+
+Q) Religious much?
+A) Truth shall make you free. And in no circumstances does it hurt the
+   validity of the code you write.
+
+Q) How did you create the emulator?
+A) Same way as everyone else. Gather documentation, create component by
+   component, do unit tests. I do tend to write large parts of code before
+   compiling and/or testing, sometimes in the order of many hundred lines,
+   but here, my actual unit sizes were like 50 lines of the resulting
+   program's size. I refined the CPU for a long time before I even began
+   writing the PPU or the APU. Then I did PPU/NMI/vblanks timing tests
+   for a week or two before I wrote the first line dealing with pixels
+   or graphics modes. Then I spent a few weeks playing with NTSC algorithms
+   before I even was sure whether I am going to manage to fit an APU in this
+   program, considering the 15 minute limit. (Sure, I could easily copypaste
+   20000 lines of code in 15 minutes, but I want people to be able to read
+   and understand the relevant bits of the code.
+   The opcode decoding matrix is machine code, it is not relevant. What's
+   relevant is the micro-operations that constitute everything the CPU does.)
+
+Q) Why did you create the video?
+A) I enjoy reading source code. I wish to return the favor. Also, I like to
+   be good at least in _something_, even if I cannot be the best in anything.
+   I also enjoy teaching, so please do ask stuff. But in a format like this
+   I need to consider things like entertainment and visibility in addition
+   to the teaching value. It is not an exact science.
+   It is hollywood, albeit scientifically accurate hollywood.
+
+-Joel Yliluoma
+ 2011-12-11 12:00 UTC
+
+
+Your question not answered? Feel free to send me a message
+in YouTube or through e-mail (bisqwit@iki.fi).
+
+Note that failure to observe the guidelines of asking a
+question at http://www.catb.org/~esr/faqs/smart-questions.html
+may result in less than serious answers.
