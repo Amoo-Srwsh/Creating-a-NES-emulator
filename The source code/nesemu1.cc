@@ -6,9 +6,7 @@
 #include <SDL.h>
 #include <vector>
 
-/* NESEMU1 : EMULATOR FOR THE NINTENDO ENTERTAINMENT SYSTEM (R) ARCHITECTURE  */
-/* Written by and copyright (C) 2011  Joel Yliluoma - http://iki.fi/bisqwit/  */
-/* Trademarks are owned by their respective owners. Lawyers love tautologies. */
+//Copyleft Amoo-Srwsh
 
 static const char* inputfn = "input.fmv";
 
